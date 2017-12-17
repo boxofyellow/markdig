@@ -5,6 +5,7 @@
 using Markdig.Extensions.Emoji;
 using Markdig.Parsers.Inlines;
 using Markdig.Renderers;
+using Markdig.Renderers.Normalize;
 
 namespace Markdig.Extensions.Tables;
 
@@ -51,6 +52,12 @@ public class PipeTableExtension : IMarkdownExtension
             if (!pipeline.InlineParsers.InsertBefore<EmojiParser>(pipeTableParser))
             {
                 pipeline.InlineParsers.InsertBefore<EmphasisInlineParser>(pipeTableParser);
+            }
+            
+            var normalizeRenderer = renderer as NormalizeRenderer;
+            if (normalizeRenderer != null)
+            {
+                normalizeRenderer.ObjectRenderers.AddIfNotAlready<NormalizeTableRenderer>();
             }
         }
     }
