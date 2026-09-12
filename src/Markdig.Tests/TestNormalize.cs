@@ -174,6 +174,25 @@ line3");
     }
 
     [Test]
+    public void ListUnorderedSingleLineNested()
+    {
+        AssertNormalizeNoTrim("- - a");
+    }
+
+    [Test]
+    public void ListUnorderedWithQuoteBlock()
+    {
+        AssertNormalizeNoTrim("- > p");
+    }
+
+    [Test]
+    public void ListUnorderedEmpty()
+    {
+        AssertNormalizeNoTrim("-", "- ");
+        AssertNormalizeNoTrim("- ");
+    }
+
+    [Test]
     public void ListOrderedLooseAndCodeBlock()
     {
         AssertNormalizeNoTrim(@"1. ```
@@ -238,6 +257,13 @@ line3");
     - Bar
 11. c
 12. c");
+    }
+
+    [Test]
+    public void ListOrderedEmpty()
+    {
+        AssertNormalizeNoTrim("1.", "1. ");
+        AssertNormalizeNoTrim("1. ");
     }
 
     [Test]

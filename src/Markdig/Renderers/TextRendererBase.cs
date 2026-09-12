@@ -74,6 +74,7 @@ public abstract class TextRendererBase<T> : TextRendererBase where T : TextRende
     {
         private readonly string? _constant;
         private readonly string[]? _lineSpecific;
+        private readonly string? _marker;
         private int position;
 
         internal Indent(string constant)
@@ -86,8 +87,20 @@ public abstract class TextRendererBase<T> : TextRendererBase where T : TextRende
             _lineSpecific = lineSpecific;
         }
 
+        internal Indent(string marker, string rest)
+        {
+            _marker = marker;
+            _constant = rest;
+        }
+
         internal string Next()
         {
+            if (_marker != null && position == 0)
+            {
+                position++;
+                return _marker;
+            }
+
             if (_constant != null)
             {
                 return _constant;
@@ -181,6 +194,21 @@ public abstract class TextRendererBase<T> : TextRendererBase where T : TextRende
 
         // ensure that indents are written to the output stream
         // this assumes that calls after PushIndent wil write children content
+        previousWasLine = true;
+    }
+
+    /// <summary>
+    /// Pushes a hanging indent. Where the first line's indent is provided and
+    /// subsequent lines will be indented by the same amount with blank spaces
+    /// </summary>
+    /// <param name="marker">The first line of the hanging indent.</param>
+    public void PushHangingIndent(string marker)
+    {
+        if (marker is null) ThrowHelper.ArgumentNullException(nameof(marker));
+        indents.Add(new Indent(marker, new string(' ', marker.Length)));
+
+        // ensure that indents are written to the output stream
+        // this assumes that calls after PushHangingIndent will write children content
         previousWasLine = true;
     }
 
