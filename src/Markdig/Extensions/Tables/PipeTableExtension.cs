@@ -66,8 +66,7 @@ public class PipeTableExtension : IMarkdownExtension
             htmlRenderer.ObjectRenderers.Add(new HtmlTableRenderer());
         }
 
-        var normalizeRenderer = renderer as NormalizeRenderer;
-        if (normalizeRenderer != null)
+        if (renderer is NormalizeRenderer normalizeRenderer && !normalizeRenderer.ObjectRenderers.Contains<NormalizeTableRenderer>())
         {
             normalizeRenderer.ObjectRenderers.AddIfNotAlready<NormalizeTableRenderer>();
         }
