@@ -53,12 +53,6 @@ public class PipeTableExtension : IMarkdownExtension
             {
                 pipeline.InlineParsers.InsertBefore<EmphasisInlineParser>(pipeTableParser);
             }
-            
-            var normalizeRenderer = renderer as NormalizeRenderer;
-            if (normalizeRenderer != null)
-            {
-                normalizeRenderer.ObjectRenderers.AddIfNotAlready<NormalizeTableRenderer>();
-            }
         }
     }
 
@@ -70,6 +64,12 @@ public class PipeTableExtension : IMarkdownExtension
         if (renderer is HtmlRenderer htmlRenderer && !htmlRenderer.ObjectRenderers.Contains<HtmlTableRenderer>())
         {
             htmlRenderer.ObjectRenderers.Add(new HtmlTableRenderer());
+        }
+
+        var normalizeRenderer = renderer as NormalizeRenderer;
+        if (normalizeRenderer != null)
+        {
+            normalizeRenderer.ObjectRenderers.AddIfNotAlready<NormalizeTableRenderer>();
         }
     }
 }
