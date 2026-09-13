@@ -21,8 +21,16 @@ public class NormalizeTableRenderer : NormalizeObjectRenderer<Table>
     {
         renderer.EnsureLine();
 
+        bool firstRow = true;
+
         foreach (var row in obj.OfType<TableRow>())
         {
+            if (!firstRow)
+            {
+                renderer.WriteLine();
+            }
+            firstRow = false;
+
             renderer.Write(PipeSeparator);
 
             foreach (var tableCell in row)
@@ -35,10 +43,10 @@ public class NormalizeTableRenderer : NormalizeObjectRenderer<Table>
                 renderer.Write(PipeSeparator);
             }
 
-            renderer.WriteLine();
-
             if (row.IsHeader)
             {
+                renderer.WriteLine();
+
                 bool alignmentEnabled = obj.ColumnDefinitions.Any(c => c.Alignment != TableColumnAlign.Left);
 
                 renderer.Write(PipeSeparator);
@@ -58,8 +66,6 @@ public class NormalizeTableRenderer : NormalizeObjectRenderer<Table>
                     renderer.Write(MarginSeparator);
                     renderer.Write(PipeSeparator);
                 }
-
-                renderer.WriteLine();
             }
         }
 

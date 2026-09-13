@@ -465,27 +465,32 @@ This is a last line";
 --- | ---
 Hello | *World*",            @"| Foo | Bar |
 | --- | --- |
-| Hello | *World* |
-");
+| Hello | *World* |");
         AssertNormalizeNoTrim(@"
 Foo | Bar
 :---: | ---:
 Hello | *World*",             @"| Foo | Bar |
 | :---: | ---: |
-| Hello | *World* |
-");
+| Hello | *World* |");
+        AssertNormalizeNoTrim(@"| Foo |
+| --- |
+| Hello World |");
+        AssertNormalizeNoTrim(@"| Foo | Bar |
+| --- | --- |
+| Hello World | *World* |");
+        AssertNormalizeNoTrim(@"| Foo | Bar |
+| :--- | ---: |
+| Hello World | *World* |");
+    }
+
+    [Test]
+    public void PipeTablesFollowedByText()
+    {
         AssertNormalizeNoTrim(@"| Foo |
 | --- |
 | Hello World |
-");
-        AssertNormalizeNoTrim(@"| Foo | Bar |
-| --- | --- |
-| Hello World | *World* |
-");
-        AssertNormalizeNoTrim(@"| Foo | Bar |
-| :--- | ---: |
-| Hello World | *World* |
-");
+
+Text following the table.");
     }
 
     private static void AssertSyntax(string expected, MarkdownObject syntax)
